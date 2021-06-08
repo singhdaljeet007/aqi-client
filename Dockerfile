@@ -1,4 +1,4 @@
-FROM node:12.13-alpine
+FROM node:12-alpine
 
 ARG branch
 # STAGE #1 Create work directory & build node project
