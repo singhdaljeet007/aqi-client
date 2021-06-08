@@ -20,4 +20,4 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule
   ],
 })
-export class AngularMaterialModule { }
+export class SharedModule { }
