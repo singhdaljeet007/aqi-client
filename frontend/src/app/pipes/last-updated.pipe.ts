@@ -8,7 +8,7 @@ export class LastUpdatedPipe implements PipeTransform {
   transform(value: number): string {
     let currentTime = new Date().getTime();
     let diff = currentTime - value;
-    if (diff < 10000) {
+    if (diff < 3000) {
       return 'A Few seconds Ago';
     }
     if (diff < 60000) {
