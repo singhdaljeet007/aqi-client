@@ -24,17 +24,21 @@ export class DataService {
 
   getCitiesData() {
     return new Promise(async (resolve, reject) => {
-      this.cityAqiData = await this.socket.pipe(map((elem) => { return this.setLastUpdated(elem) }),
+      this.cityAqiData = await this.socket.pipe(
         tap({
           error: error => console.log('socket error', error),
           complete: () => console.log('socket Connection Closed')
         }
-      )).subscribe(data=>{
-          console.log("cityAqiData from dataService:",data);
-          this.cityAqiData=data;
+        )).subscribe(async data => {
+          console.log("new cityAqiData from ws:", data);
+          let res = await data.reduce((a: any, b: any) => {
+            let a1 = this.cityAqiData.find((e: any) => e.city.toString().toLowerCase() === b.city.toString().toLowerCase()) || {};
+            return a.concat(Object.assign(a1, b));
+          }, []);
+          this.cityAqiData = res.map((elem: any) => { return this.setLastUpdated(elem) })
           this.refreshData();
           resolve(this.cityAqiData);
-      })
+        })
     })
   }
 
