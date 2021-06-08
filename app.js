@@ -4,10 +4,10 @@ var app = express();
 var http = require('http');
 global.__base = __dirname;
 
-app.set('port', 80);
+app.set('port', 3000);
 var server = http.createServer(app);
 
-server.listen(80);
+server.listen(3000);
 server.timeout = 100000000;
 server.on('listening', ()=>{
     var addr = server.address();
