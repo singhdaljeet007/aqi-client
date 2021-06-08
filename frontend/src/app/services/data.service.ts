@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 // import { io } from 'socket.io-client';
-import { HttpClient } from '@angular/common/http';
 export const WS_ENDPOINT = environment.WS_ENDPOINT;
-import { EMPTY, Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, retry, switchAll, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { webSocket, WebSocketSubject, WebSocketSubjectConfig } from "rxjs/webSocket";
 import { AqiData } from '../interfaces/aqi-data.interface';
 
@@ -31,10 +30,16 @@ export class DataService {
         }
         )).subscribe(async data => {
           // console.log("new cityAqiData from ws:", data);
-          let cityData = this.cityAqiData.map(item => {
-            let item2 = data.find((i2:any) => i2.city.toString().toLowerCase() === item.city.toString().toLowerCase());
-            return item2 ? { ...item, ...item2 } : item;
-          }); 
+            let cityData = this.cityAqiData.map(item => {
+              let item2 = data.find((i2:any) => {
+                if(i2.city.toString().toLowerCase() === item.city.toString().toLowerCase()){
+                    i2['last_updated']=new Date().getTime();
+                }
+                return i2;
+              });
+
+              return item2 ? { ...item, ...item2 } : item;
+            }); 
           let arr3 = data.filter((item1:any) => !cityData.some(item2 => item1.city.toString().toLowerCase() === item2.city.toString().toLowerCase()));
           let mergedArr = [ ...cityData, ...arr3 ]
           this.cityAqiData = await mergedArr.map((elem: any) => { return this.setLastUpdated(elem) })
@@ -45,7 +50,9 @@ export class DataService {
   }
 
   setLastUpdated(elem: any) {
-    elem['last_updated'] = new Date().getTime();
+    if(!elem['last_updated']){
+      elem['last_updated'] = new Date().getTime();
+    }
     return elem;
   }
 

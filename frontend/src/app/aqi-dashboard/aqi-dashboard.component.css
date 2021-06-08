@@ -29,4 +29,7 @@
     max-width: fit-content;
     width: 100%;
   }
+  th,td{
+    padding-left: 1%;
+  }
   
