@@ -10,7 +10,7 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./aqi-chart.component.css']
 })
 export class AqiChartComponent {
-  @Input('city') city:string='Mumbai';
+  @Input('city') city:string='';
   rate: any;
   Highcharts: typeof Highcharts = Highcharts;
   chardata: any[] = [];
@@ -22,11 +22,15 @@ export class AqiChartComponent {
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
       //console.log("cityAqiData from app component:",data);
       this.cityAqiData=<Array<AqiData>>data;
-      this.refreshMap();
+      if(this.city && this.city!=""){
+        this.refreshMap();
+      }
     });
     this.dataService.getCitiesData().then((data)=>{
       this.cityAqiData= <Array<AqiData>>data;
-      this.refreshMap();
+      if(this.city && this.city!=""){
+        this.refreshMap();
+      }
     })
   }
 
@@ -47,4 +51,7 @@ export class AqiChartComponent {
       }
   }
 
+  ngOnDestroy(){
+    this.aqiDataSubscription.unsubscribe();
+  }
 }

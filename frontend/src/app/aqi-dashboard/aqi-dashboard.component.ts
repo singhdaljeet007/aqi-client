@@ -13,10 +13,10 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class AqiDashboardComponent {
   title = 'air-quality-monitoring';
-  displayedColumns: string[] = ['city', 'aqi', 'last_updated'];
+  displayedColumns: string[] = ['city', 'aqi', 'last_updated','action'];
   dataSource = new MatTableDataSource();
   aqiDataSubscription:Subscription;
-  selectedCity:string='Mumbai';
+  selectedCity:string='';
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -24,10 +24,10 @@ export class AqiDashboardComponent {
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
       //console.log("cityAqiData from app component:",data);
       this.dataSource.data=<Array<AqiData>>data;
-      this.selectedCity = data[0].city;
     });
     this.dataService.getCitiesData().then((data)=>{
       this.dataSource.data= <Array<AqiData>>data;
+      this.selectedCity = (<Array<AqiData>>data)[0].city;
     })
   }
 

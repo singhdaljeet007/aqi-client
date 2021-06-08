@@ -1,7 +1,6 @@
 <div class="content" role="main">
   <h2>Live City Wise Air Quality Index</h2>
-  <div class="spacer"></div>
-  <div layout="row">
+  <div layout="row" layout-xs="column">
     <div flex>
       <aqi-chart [city]="selectedCity"></aqi-chart>
     </div>
@@ -9,7 +8,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <ng-container matColumnDef="city">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
-          <td mat-cell *matCellDef="let element"> {{element.city}}</td>
+          <td mat-cell *matCellDef="let element" [ngClass]="{'selected-city': element.city == selectedCity , '': element.city != selectedCity }" (click)="selectCity(element.city)"> {{element.city}}</td>
         </ng-container>
         <ng-container matColumnDef="aqi">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> AQI </th>
@@ -17,11 +16,15 @@
         </ng-container>
         <ng-container matColumnDef="last_updated">
           <th mat-header-cell *matHeaderCellDef> Last Updated </th>
-          <td mat-cell *matCellDef="let element"> {{element.last_updated | lastUpdated}} 
-            <button mat-raised-button color="primary" (click)="selectCity(element.city)">Show AQI Chart</button>
+          <td mat-cell *matCellDef="let element"> {{element.last_updated | lastUpdated}}
           </td>
         </ng-container>
-
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+          <td mat-cell *matCellDef="let element"> 
+            <button *ngIf="element.city != selectedCity" mat-raised-button color="primary" (click)="selectCity(element.city)">Show Graph</button>
+          </td>
+        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
