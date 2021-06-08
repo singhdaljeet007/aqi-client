@@ -13,32 +13,23 @@ let ELEMENT_DATA:Array<AqiData>=[];
 })
 export class AppComponent {
   title = 'air-quality-monitoring';
-  aqiData: Array<any> =[];
+  aqiData: Array<AqiData> =[];
   displayedColumns: string[] = ['city', 'aqi', 'last_updated'];
   dataSource = new MatTableDataSource();
   aqiDataSubscription:Subscription;
 
   constructor(private dataService:DataService){
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
-      console.log("cityAqiData from app component:",data);
+      //console.log("cityAqiData from app component:",data);
+      this.dataSource.data=this.aqiData;
     })
   }
   
   async ngOnInit() {
     this.dataService.getCitiesData().then((data)=>{
-      console.log("cityAqiData from appcomponent ngOnInit:",data);
+      this.aqiData = <Array<AqiData>>data;
+      this.dataSource.data=this.aqiData;
     })
-    // this.dataService.setupSocketConnection();
-    this.aqiData = this.dataService.getCityData();
-    this.setElementData();
-  }
-
-  async setElementData(){
-    await this.aqiData.forEach((elem:any) => {
-        elem['last_updated'] = new Date().getTime();
-        ELEMENT_DATA.push(elem);
-    });
-    this.dataSource.data=ELEMENT_DATA;
   }
 
   ngOnDestroy(){

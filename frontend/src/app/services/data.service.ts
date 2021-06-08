@@ -16,7 +16,7 @@ export class DataService {
   private cityData: any = [];
   private socket: WebSocketSubject<any>
   private messagesSubject = new Subject<any>();
-  private cityAqiData: any = [];
+  private cityAqiData: Array<any> = [];
   constructor() {
     this.socket = this.getNewWebSocket();
     this.connect();
@@ -24,17 +24,21 @@ export class DataService {
 
   getCitiesData() {
     return new Promise(async (resolve, reject) => {
-      this.cityAqiData = await this.socket.pipe(map((elem) => { return this.setLastUpdated(elem) }),
+      await this.socket.pipe(
         tap({
           error: error => console.log('socket error', error),
           complete: () => console.log('socket Connection Closed')
         }
-      )).subscribe(data=>{
-          console.log("cityAqiData from dataService:",data);
-          this.cityAqiData=data;
-          this.refreshData();
+        )).subscribe(async data => {
+          console.log("new cityAqiData from ws:", data);
+          let res = await data.reduce((a: any, b: any) => {
+            let a1 = this.cityAqiData.find((e: any) => e.city.toString().toLowerCase() === b.city.toString().toLowerCase()) || {};
+            return a.concat(Object.assign(a1, b));
+          }, []);
+          this.cityAqiData = await res.map((elem: any) => { return this.setLastUpdated(elem) })
+          await this.refreshData();
           resolve(this.cityAqiData);
-      })
+        })
     })
   }
 
