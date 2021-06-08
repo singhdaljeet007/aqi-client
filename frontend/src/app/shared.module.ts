@@ -4,20 +4,20 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 
-// const materialModules = [
-//   MatTableModule,
-//   MatPaginatorModule,
-//   MatSortModule
-// ];
+const materialModules = [
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
+];
 
 @NgModule({
   declarations:[],
   imports: [
     CommonModule,
-    MatTableModule
+    ... materialModules
   ],
   exports: [
-    MatTableModule
+    ... materialModules
   ],
 })
 export class SharedModule { }

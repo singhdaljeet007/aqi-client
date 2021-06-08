@@ -31,13 +31,10 @@ export class DataService {
         )).subscribe(async data => {
           // console.log("new cityAqiData from ws:", data);
             let cityData = this.cityAqiData.map(item => {
-              let item2 = data.find((i2:any) => {
-                if(i2.city.toString().toLowerCase() === item.city.toString().toLowerCase()){
-                    i2['last_updated']=new Date().getTime();
-                }
-                return i2;
-              });
-
+              let item2 = data.find((i2:any) => i2.city.toString().toLowerCase() === item.city.toString().toLowerCase());
+              if(item2 && Array.isArray(item2)){
+                item2.map((elem:any)=>{return this.deleteUpdatedDate(elem) })
+              }
               return item2 ? { ...item, ...item2 } : item;
             }); 
           let arr3 = data.filter((item1:any) => !cityData.some(item2 => item1.city.toString().toLowerCase() === item2.city.toString().toLowerCase()));
@@ -56,6 +53,12 @@ export class DataService {
     return elem;
   }
 
+  deleteUpdatedDate(elem:any){
+    if(!elem['last_updated']){
+      delete elem['last_updated'];
+    }
+    return elem;
+  }
   connect() {
     this.socket = this.getNewWebSocket();
   }
