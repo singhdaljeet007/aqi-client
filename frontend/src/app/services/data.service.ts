@@ -31,9 +31,6 @@ export class DataService {
           // console.log("new cityAqiData from ws:", data);
             let cityData = this.cityAqiData.map(item => {
               let item2 = data.find((i2:any) => i2.city.toString().toLowerCase() === item.city.toString().toLowerCase());
-              if(item2 && Array.isArray(item2)){
-                item2.map((elem:any)=>{return this.deleteUpdatedDate(elem) })
-              }
               return item2 ? { ...item, ...item2 } : item;
             }); 
           let arr3 = data.filter((item1:any) => !cityData.some(item2 => item1.city.toString().toLowerCase() === item2.city.toString().toLowerCase()));
@@ -46,16 +43,7 @@ export class DataService {
   }
 
   setLastUpdated(elem: any) {
-    if(!elem['last_updated']){
-      elem['last_updated'] = new Date().getTime();
-    }
-    return elem;
-  }
-
-  deleteUpdatedDate(elem:any){
-    if(elem['last_updated']){
-      delete elem['last_updated'];
-    }
+    elem['last_updated'] = new Date().getTime();
     return elem;
   }
 

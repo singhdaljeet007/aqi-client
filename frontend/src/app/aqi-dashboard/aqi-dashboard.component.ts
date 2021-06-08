@@ -26,9 +26,9 @@ export class AqiDashboardComponent {
       this.dataSource.data=<Array<AqiData>>data;
       this.selectedCity = data[0].city;
     });
-    // this.dataService.getCitiesData().then((data)=>{
-    //   this.dataSource.data= <Array<AqiData>>data;
-    // })
+    this.dataService.getCitiesData().then((data)=>{
+      this.dataSource.data= <Array<AqiData>>data;
+    })
   }
 
   ngAfterViewInit() {
@@ -38,5 +38,7 @@ export class AqiDashboardComponent {
   ngOnDestroy(){
     this.aqiDataSubscription.unsubscribe();
   }
-
+  selectCity(city:string){
+    this.selectedCity = city;
+  }
 }

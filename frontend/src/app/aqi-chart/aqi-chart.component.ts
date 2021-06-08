@@ -24,6 +24,10 @@ export class AqiChartComponent {
       this.cityAqiData=<Array<AqiData>>data;
       this.refreshMap();
     });
+    this.dataService.getCitiesData().then((data)=>{
+      this.cityAqiData= <Array<AqiData>>data;
+      this.refreshMap();
+    })
   }
 
   refreshMap() {
@@ -38,7 +42,7 @@ export class AqiChartComponent {
           zoomType: 'x'
         },
         title: {
-          text: `$(this.city) AQI Chart`,
+          text: this.city+ ' AQI Chart',
         }
       }
   }

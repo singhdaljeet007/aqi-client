@@ -26,10 +26,13 @@
     flex: 1;
   }
   table{
-    width: 50%;
+    width: 100%;
   }
   th,td{
     width:25%;
     padding: 0% 1%;
+  }
+  mat-paginator{
+    width:100%;
   }
   
