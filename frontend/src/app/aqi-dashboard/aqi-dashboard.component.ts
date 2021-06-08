@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,25 +11,24 @@ import { DataService } from 'src/app/services/data.service';
   templateUrl: './aqi-dashboard.component.html',
   styleUrls: ['./aqi-dashboard.component.css']
 })
-export class AqiDashboardComponent implements OnInit {
+export class AqiDashboardComponent {
   title = 'air-quality-monitoring';
   displayedColumns: string[] = ['city', 'aqi', 'last_updated'];
   dataSource = new MatTableDataSource();
   aqiDataSubscription:Subscription;
+  selectedCity:string='Mumbai';
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
   constructor(private dataService:DataService){
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
       //console.log("cityAqiData from app component:",data);
-      this.dataSource.data=<Array<AqiData>>data
-    })
-  }
-  
-  async ngOnInit() {
-    this.dataService.getCitiesData().then((data)=>{
-      this.dataSource.data= <Array<AqiData>>data;
-    })
+      this.dataSource.data=<Array<AqiData>>data;
+      this.selectedCity = data[0].city;
+    });
+    // this.dataService.getCitiesData().then((data)=>{
+    //   this.dataSource.data= <Array<AqiData>>data;
+    // })
   }
 
   ngAfterViewInit() {

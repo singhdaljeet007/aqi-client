@@ -1,1 +1,5 @@
-<p>aqi-chart works!</p>
+<highcharts-chart *ngIf="chartOptions"
+  [Highcharts]="Highcharts"
+  [options]="chartOptions"
+  style="width: 50%; height: 400px; display: block;"
+></highcharts-chart>

@@ -18,7 +18,6 @@ export class DataService {
   private cityAqiData: Array<any> = [];
   constructor() {
     this.socket = this.getNewWebSocket();
-    this.connect();
   }
 
   getCitiesData() {
@@ -54,13 +53,10 @@ export class DataService {
   }
 
   deleteUpdatedDate(elem:any){
-    if(!elem['last_updated']){
+    if(elem['last_updated']){
       delete elem['last_updated'];
     }
     return elem;
-  }
-  connect() {
-    this.socket = this.getNewWebSocket();
   }
 
   private getNewWebSocket() {
