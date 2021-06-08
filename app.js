@@ -17,11 +17,11 @@ server.on('listening', ()=>{
     console.log('Listening on ' + bind);
 });
 
-app.use(express.static(path.join(__dirname, 'client-app/dist')))
+app.use(express.static(path.join(__dirname, 'frontend/dist')))
 
 app.get('*',async (req, res,next)=>{
     res.setHeader("Access-Allow-Control-Origin", "*");
-    res.sendFile(__base+"/client-app/dist/index.html");
+    res.sendFile(__base+"/frontend/dist/index.html");
 })
 
 module.exports = app;
