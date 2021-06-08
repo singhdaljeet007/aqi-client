@@ -1,0 +1,7 @@
+{
+    "/socket.io": {
+        "target": "http://city-ws.herokuapp.com",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}
