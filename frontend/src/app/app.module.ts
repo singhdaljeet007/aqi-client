@@ -8,7 +8,7 @@ import { AqiHighlightDirective } from './directives/aqi-highlight.directive';
 import { DataService } from './services/data.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { SharedModule } from './shared.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { WebSocketService } from './services/web-socket.service';
@@ -24,7 +24,7 @@ import { WebSocketService } from './services/web-socket.service';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AngularMaterialModule,
+    SharedModule,
     HighchartsChartModule
   ],
   providers: [DataService, WebSocketService],
