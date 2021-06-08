@@ -4,8 +4,6 @@ import { Subscription } from 'rxjs';
 import { AqiData } from './interfaces/aqi-data.interface';
 import { DataService } from './services/data.service';
 
-let ELEMENT_DATA:Array<AqiData>=[];
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,7 +11,6 @@ let ELEMENT_DATA:Array<AqiData>=[];
 })
 export class AppComponent {
   title = 'air-quality-monitoring';
-  aqiData: Array<AqiData> =[];
   displayedColumns: string[] = ['city', 'aqi', 'last_updated'];
   dataSource = new MatTableDataSource();
   aqiDataSubscription:Subscription;
@@ -21,14 +18,13 @@ export class AppComponent {
   constructor(private dataService:DataService){
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
       //console.log("cityAqiData from app component:",data);
-      this.dataSource.data=this.aqiData;
+      this.dataSource.data=<Array<AqiData>>data
     })
   }
   
   async ngOnInit() {
     this.dataService.getCitiesData().then((data)=>{
-      this.aqiData = <Array<AqiData>>data;
-      this.dataSource.data=this.aqiData;
+      this.dataSource.data= <Array<AqiData>>data;
     })
   }
 

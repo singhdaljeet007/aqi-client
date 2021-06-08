@@ -31,11 +31,14 @@ export class DataService {
         }
         )).subscribe(async data => {
           console.log("new cityAqiData from ws:", data);
-          let res = await data.reduce((a: any, b: any) => {
-            let a1 = this.cityAqiData.find((e: any) => e.city.toString().toLowerCase() === b.city.toString().toLowerCase()) || {};
-            return a.concat(Object.assign(a1, b));
-          }, []);
-          this.cityAqiData = await res.map((elem: any) => { return this.setLastUpdated(elem) })
+          let cityData = this.cityAqiData;
+          cityData = cityData.map(item => {
+            let item2 = data.find((i2:any) => i2.id === item.id);
+            return item2 ? { ...item, ...item2 } : item;
+          }); 
+          let arr3 = data.filter((item1:any) => !cityData.some(item2 => item1.id === item2.id));
+          let mergedArr = [ ...cityData, ...arr3 ]
+          this.cityAqiData = await mergedArr.map((elem: any) => { return this.setLastUpdated(elem) })
           await this.refreshData();
           resolve(this.cityAqiData);
         })
