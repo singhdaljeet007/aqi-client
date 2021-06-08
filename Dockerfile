@@ -6,12 +6,12 @@ WORKDIR /aqi_client
 
 COPY package.json .
 
-RUN npm install
+RUN npm config set unsafe-perm true && npm install
 COPY . .
 
 # STAGE #2 Download dependencies and build for client project
 RUN cd frontend && npm i && npm run build && mv dist /aqi_client/dist_m && rm -rf /frontend/* && mv /aqi_client/dist_m /aqi_client/frontend/dist
 
 # Bundle app source
-EXPOSE 80
+EXPOSE 5000
 CMD ["npm", "start"]
