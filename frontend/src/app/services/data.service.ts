@@ -30,7 +30,7 @@ export class DataService {
           complete: () => console.log('socket Connection Closed')
         }
         )).subscribe(async data => {
-          console.log("new cityAqiData from ws:", data);
+          // console.log("new cityAqiData from ws:", data);
           let cityData = this.cityAqiData.map(item => {
             let item2 = data.find((i2:any) => i2.city.toString().toLowerCase() === item.city.toString().toLowerCase());
             return item2 ? { ...item, ...item2 } : item;
