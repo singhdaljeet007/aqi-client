@@ -11,15 +11,13 @@ import { DataService } from '../services/data.service';
 })
 export class AqiChartComponent {
   @Input('city') city: string = '';
-  @Input() cityChanged: Observable<void> | undefined;
-
   rate: any;
   Highcharts: typeof Highcharts = Highcharts;
   chardata: any[] = [];
   chartOptions: any;
   aqiDataSubscription: Subscription;
   cityAqiData: Array<AqiData> = [];
-  private cityChangeSubscription: Subscription;
+  cityChangeSubscription: Subscription;
 
   constructor(private dataService: DataService) {
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data) => {
@@ -31,7 +29,8 @@ export class AqiChartComponent {
     });
     Highcharts.setOptions({
       time: {
-        timezone: 'Asia/Kolkata'
+        useUTC: false,
+        timezone: 'Asia/Calcutta',
       }
     });
     this.dataService.getCitiesData().then((data) => {
@@ -40,7 +39,11 @@ export class AqiChartComponent {
         this.refreshMap();
       }
     })
-    this.cityChangeSubscription = (<Observable<void>>this.cityChanged).subscribe(() => this.refreshMap());
+    this.cityChangeSubscription = this.dataService.getChangeCitySubject().subscribe(() => {
+      if (this.city && this.city != "") {
+        this.refreshMap();
+      }
+    });
   }
 
   refreshMap() {

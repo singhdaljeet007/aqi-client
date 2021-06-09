@@ -19,7 +19,6 @@ export class AqiDashboardComponent {
   selectedCity:string='';
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
-  changeCitySubject: Subject<void> = new Subject<void>();
 
   constructor(private dataService:DataService){
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
@@ -41,6 +40,6 @@ export class AqiDashboardComponent {
   }
   selectCity(city:string){
     this.selectedCity = city;
-    this.changeCitySubject.next();
+    this.dataService.updateCityChangeSubject();
   }
 }

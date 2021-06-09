@@ -15,6 +15,7 @@ export class DataService {
   private cityData: any = [];
   private socket: WebSocketSubject<any>
   private messagesSubject = new Subject<any>();
+  private changeCitySubject = new Subject<any>();
   private cityAqiData: Array<any> = [];
   constructor() {
     this.socket = this.getNewWebSocket();
@@ -53,6 +54,13 @@ export class DataService {
 
   getCityAqiDataSubject() {
     return this.messagesSubject.asObservable();
+  }
+
+  getChangeCitySubject(){
+      return this.changeCitySubject.asObservable();
+  }
+  updateCityChangeSubject(){
+    this.changeCitySubject.next();
   }
 
   refreshData() {
