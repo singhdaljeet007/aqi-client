@@ -41,3 +41,5 @@ Application was pushed to heroku via cli using below comands:
 
     heroku container:release web --app aqiclient
 
+    heroku logs --tail --app aqiclient
+
