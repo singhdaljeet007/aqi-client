@@ -2,7 +2,7 @@
   <h2>Live City Wise Air Quality Index</h2>
   <div layout="row" layout-xs="column">
     <div flex>
-      <aqi-chart [city]="selectedCity"></aqi-chart>
+      <aqi-chart [city]="selectedCity" [cityChanged]="changeCitySubject.asObservable()"></aqi-chart>
     </div>
     <div flex>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>

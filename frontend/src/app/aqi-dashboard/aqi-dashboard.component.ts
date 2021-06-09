@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AqiData } from 'src/app/interfaces/aqi-data.interface';
 import { DataService } from 'src/app/services/data.service';
 
@@ -19,6 +19,7 @@ export class AqiDashboardComponent {
   selectedCity:string='';
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
+  changeCitySubject: Subject<void> = new Subject<void>();
 
   constructor(private dataService:DataService){
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data)=>{
@@ -40,5 +41,6 @@ export class AqiDashboardComponent {
   }
   selectCity(city:string){
     this.selectedCity = city;
+    this.changeCitySubject.next();
   }
 }

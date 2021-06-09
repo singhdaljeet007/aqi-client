@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AqiData } from '../interfaces/aqi-data.interface';
 import { DataService } from '../services/data.service';
 
@@ -11,12 +11,15 @@ import { DataService } from '../services/data.service';
 })
 export class AqiChartComponent {
   @Input('city') city: string = '';
+  @Input() cityChanged: Observable<void> | undefined;
+
   rate: any;
   Highcharts: typeof Highcharts = Highcharts;
   chardata: any[] = [];
   chartOptions: any;
   aqiDataSubscription: Subscription;
   cityAqiData: Array<AqiData> = [];
+  private cityChangeSubscription: Subscription;
 
   constructor(private dataService: DataService) {
     this.aqiDataSubscription = this.dataService.getCityAqiDataSubject().subscribe((data) => {
@@ -37,6 +40,7 @@ export class AqiChartComponent {
         this.refreshMap();
       }
     })
+    this.cityChangeSubscription = (<Observable<void>>this.cityChanged).subscribe(() => this.refreshMap());
   }
 
   refreshMap() {
@@ -109,5 +113,6 @@ export class AqiChartComponent {
 
   ngOnDestroy() {
     this.aqiDataSubscription.unsubscribe();
+    this.cityChangeSubscription.unsubscribe();
   }
 }
