@@ -31,7 +31,8 @@ export class AqiChartComponent {
     });
     Highcharts.setOptions({
       time: {
-        timezone: 'Asia/Kolkata'
+        useUTC: false,
+        timezone: 'Asia/Calcutta',
       }
     });
     this.dataService.getCitiesData().then((data) => {
